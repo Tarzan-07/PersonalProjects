@@ -32,10 +32,10 @@ df = pd.read_csv('completeSpamAssassin.csv')
 
 # nan_handle = nan_handler()
 
-pipeline = Pipeline([
+ct = ColumnTransformer(transformers=[
     ('nan', CustomHandler(func=nan_handler))
 ])
 
-dfpro = pipeline.fit_transform(df['Body'])
+dfpro = ct.fit_transform(df['Body'])
 
 dfpro
