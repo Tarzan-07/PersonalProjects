@@ -18,7 +18,7 @@ from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.metrics import accuracy_score, precision_score, confusion_matrix
 import pickle
-
+from CustomWrapper import CustomHandler
 from nan_handler import nan_handler
 from preprocessing import process
 import warnings
@@ -30,10 +30,12 @@ df = pd.read_csv('completeSpamAssassin.csv')
 
 # dataset preprocessing
 
+# nan_handle = nan_handler()
+
 pipeline = Pipeline([
-    ('pro', process)
+    ('nan', CustomHandler(func=nan_handler))
 ])
 
-dfpro = pipeline.fit(df['Body'])
+dfpro = pipeline.fit_transform(df['Body'])
 
 dfpro
