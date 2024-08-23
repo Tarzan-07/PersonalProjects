@@ -18,8 +18,8 @@ from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.metrics import accuracy_score, precision_score, confusion_matrix
 import pickle
-from CustomWrapper import CustomHandler
-from nan_handler import nan_handler
+# from CustomWrapper import CustomHandler
+from nan_handler import DropNaN
 from preprocessing import process
 import warnings
 warnings.filterwarnings('ignore')
@@ -32,10 +32,11 @@ df = pd.read_csv('completeSpamAssassin.csv')
 
 # nan_handle = nan_handler()
 
+
 ct = ColumnTransformer(transformers=[
-    ('nan', CustomHandler(func=nan_handler))
+    ('nan', DropNaN(), df.columns)
 ])
 
-dfpro = ct.fit_transform(df['Body'])
+dfpro = ct.fit_transform(df)
 
-dfpro
+print(dfpro)
