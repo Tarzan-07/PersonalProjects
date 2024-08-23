@@ -32,11 +32,17 @@ df = pd.read_csv('completeSpamAssassin.csv')
 
 # nan_handle = nan_handler()
 
+print(df.columns)
 
 ct = ColumnTransformer(transformers=[
     ('nan', DropNaN(), df.columns)
 ])
 
+pipe = Pipeline([
+    ('drop', df['Unnamed: 0']),
+    ()
+])
+
 dfpro = ct.fit_transform(df)
 
-print(dfpro)
+print(pd.DataFrame(dfpro).columns)
