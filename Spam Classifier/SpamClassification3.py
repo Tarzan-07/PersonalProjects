@@ -9,7 +9,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-# from preprocessing import preprocessor
+from preprocessing import process
+from preprocessorWrapper import ProcessFunction
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -34,15 +35,26 @@ df = pd.read_csv('completeSpamAssassin.csv')
 
 print(df.columns)
 
+dfy = df['Label']
+dfx = df.drop('Label', axis=1)
+
 ct = ColumnTransformer(transformers=[
-    ('nan', DropNaN(), df.columns)
+    ('drop_unnamed', 'drop', ['Unnamed: 0']),
+    ('nan', DropNaN(), df.columns),
+    ('preprocess', ProcessFunction(process)),
 ])
 
 pipe = Pipeline([
-    ('drop', df['Unnamed: 0']),
-    ()
+    ('ct', ct),
+    ('vectorizer', TfidfVectorizer()),
+    ('model', RandomForestClassifier(n_estimators=50, random_state=0))
 ])
 
-dfpro = ct.fit_transform(df)
 
-print(pd.DataFrame(dfpro).columns)
+
+xtrain, xtest, ytrain, ytest = train_test_split(dfx, dfy, shuffle=True, test_size=0.25)
+dfpro = pipe.fit(xtrain, ytrain)
+predictions = pipe.predict(xtest)
+
+# print(pd.DataFrame(dfpro).columns)
+print(predictions)
