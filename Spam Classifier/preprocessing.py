@@ -6,7 +6,8 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer('english')
 try:
     def process(text):
-        print(type(text))
+        df = []
+        print((text))
         for i in text:
             i = i.lower()
             # print(type(i))
@@ -17,14 +18,27 @@ try:
                 if i.isalnum():
                     y.append(stemmer.stem(i))
 
-            i = y[:]
+            df.append(" ".join(y[:]))
             y.clear()
 
             
         # for t in i:
         #     y.append(stemmer.stem(i))
         
+        # print(df)
+        
+        # for i in df:
+        # # print(df)
+        #     dfnew.append(" ".join(i))
+        
         print("preprocessing done")
-        return " ".join(y)
+        
+        return df
+    
+    def spaces(df):
+        # print(df)
+        df = df.replace(r'^\s*$', np.nan, regex=True).dropna()
+        # print(df)
+        return df
 except Exception as e:
     print(e)

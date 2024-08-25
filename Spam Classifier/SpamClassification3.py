@@ -9,7 +9,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from preprocessing import process
+from preprocessing import process, spaces
 from preprocessorWrapper import ProcessFunction
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
@@ -50,8 +50,9 @@ ct = ColumnTransformer(transformers=[
 pipe = Pipeline([
     ('ct', ct),
     ('drop', DropNaN()),
+    ('prep', ProcessFunction(spaces)),
     ('preprocess', ProcessFunction(process)),
-    ('vectorizer', TfidfVectorizer()),
+    ('vectorizer', TfidfVectorizer(token_pattern='(?u)\\b\\w+\\b')),
     ('model', RandomForestClassifier(n_estimators=50, random_state=0))
 ])
 
