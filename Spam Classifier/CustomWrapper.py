@@ -1,13 +1,13 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 
-class CustomHandler(BaseEstimator, TransformerMixin):
-    def __init__(self, func) -> None:
-        self.func = func
+class DropColumns(BaseEstimator, TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
 
-    def fit(self, x, y=None):
+    def fit(self, X, y=None):
         return self
-    
-    def transform(self, x):
-        xtransformed = self.func(x)
-        return xtransformed
+
+    def transform(self, X):
+        print(type(X))
+        return X.drop(columns=self.columns)
     
