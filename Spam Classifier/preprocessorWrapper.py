@@ -10,8 +10,8 @@ try:
         
         def transform(self, x):
             x = pd.DataFrame(x)
-            # print(x)
             x = x.apply(self.process_function)
-            return pd.DataFrame(x, index=[0])
+            # print(x)
+            return pd.DataFrame(x)
 except Exception as e:
     print(e)

@@ -9,7 +9,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from preprocessing import process, spaces
+from preprocessing import process, spaces, process2, ensureString
 from preprocessorWrapper import ProcessFunction
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
@@ -29,20 +29,12 @@ warnings.filterwarnings('ignore')
 
 df = pd.read_csv('completeSpamAssassin.csv')
 
-# pro = process()
-
-# dataset preprocessing
-
-# nan_handle = nan_handler()
-
 print(df.columns)
 
 dfy = df['Label']
 dfx = df.drop('Label', axis=1)
-# df = df.dropna(axis=0)
 ct = ColumnTransformer(transformers=[
     ('drop_unnamed', DropColumns(columns=['Unnamed: 0']), slice(0, None)),
-    # ('preprocess', ProcessFunction(process)),
 ])
 
 # dfprocessed = ct.fit_transform(df)
@@ -51,16 +43,17 @@ pipe = Pipeline([
     ('ct', ct),
     ('drop', DropNaN()),
     ('prep', ProcessFunction(spaces)),
-    ('preprocess', ProcessFunction(process)),
-    ('vectorizer', TfidfVectorizer(token_pattern='(?u)\\b\\w+\\b')),
-    ('model', RandomForestClassifier(n_estimators=50, random_state=0))
+    ('ensure', ProcessFunction(ensureString)),
+    ('preprocess', ProcessFunction(process2)),
+    # ('vectorizer', TfidfVectorizer(token_pattern='(?u)\\b\\w+\\b')),
+    # ('model', RandomForestClassifier(n_estimators=50, random_state=0))
 ])
 
 # print(dfprocessed)
 
 xtrain, xtest, ytrain, ytest = train_test_split(dfx, dfy, shuffle=True, test_size=0.25)
 dfpro = pipe.fit(pd.DataFrame(xtrain), pd.DataFrame(ytrain))
-predictions = pipe.predict(xtest)
+# predictions = pipe.predict(xtest)
 
 # print(pd.DataFrame(dfpro).columns)
-print(predictions)
+# print(predictions)
