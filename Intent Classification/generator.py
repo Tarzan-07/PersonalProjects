@@ -2,7 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages.ai import AIMessage
 from ray import serve
 from starlette.requests import Request
-@serve.deployment(num_replicas=1, ray_actor_options={'num_cpus': 0.5})
+# @serve.deployment(num_replicas=1, ray_actor_options={'num_cpus': 0.5})
 class JokeGenerator:
     def __init__(self):
         self.llm = ChatOllama(model='gemma:2b')
@@ -12,9 +12,9 @@ class JokeGenerator:
         content = response.content
         return content
     
-    async def __call__(self, http_request: Request):
-        joke = await http_request.json()
-        return self.generate_response(joke)
+    # async def __call__(self, http_request: Request):
+    #     joke = await http_request.json()
+    #     return self.generate_response(joke)
 
-joke = JokeGenerator.bind()
-serve.run(joke, route_prefix='/joke', blocking =True)
+# joke = JokeGenerator.bind()
+# serve.run(joke, route_prefix='/joke', blocking =True)
