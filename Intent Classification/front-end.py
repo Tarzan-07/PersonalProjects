@@ -9,5 +9,6 @@ input_text = st.text_input("Enter text for classification:")
 st.button("Generate")
 if st.button:
     # response = requests.get('http://localhost:8000/joke', json=input_text)
-    response = JokeGenerator.generate_response(input_text)
-    st.write(response.text)
+    joke_generator = JokeGenerator()
+    response = joke_generator.generate_response(input_text)
+    st.write(response)
