@@ -1,7 +1,7 @@
 name: 'Custom Action'
 description: Fetches inputs
 on: 
-  workflow-dispatch
+  workflow-dispatch:
     inputs:
       name: 
         description: 'name'
