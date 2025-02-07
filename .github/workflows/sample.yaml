@@ -1,0 +1,17 @@
+name: sample-test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v4
+      - name: execute python script
+        run: python hello_world.py
