@@ -2,11 +2,11 @@ name: 'Custom Action'
 description: Fetches inputs
 on: 
   workflow-dispatch
-  inputs:
-    name: 
-      description: 'name'
-      required: true
-      default: 'World'
+    inputs:
+      name: 
+        description: 'name'
+        required: true
+        default: 'World'
 
 jobs: 
   run-python:
